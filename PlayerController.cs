@@ -11,14 +11,21 @@ public class PlayerController : MonoBehaviour
     float h;
     float v;
 
+    [SerializeField] Camera cam;
+    [SerializeField] Transform aim;
+    [SerializeField] float aimDistance = 2.5f;
+    Vector2 facingDirection;
+
     private void Update()
     {
         h = Input.GetAxisRaw(HORIZONTAL);
         v = Input.GetAxisRaw (VERTICAL);
         moveDirection.x = h;
         moveDirection.y = v;
-
         transform.position += moveDirection.normalized * speed * Time.deltaTime;
+
+        facingDirection = cam.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        aim.position = transform.position + (Vector3)facingDirection.normalized * aimDistance;
     }
 
 
