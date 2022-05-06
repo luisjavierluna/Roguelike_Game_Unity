@@ -15,4 +15,13 @@ public class BulletController : MonoBehaviour
     {
         transform.position += transform.right * speed * Time.deltaTime;
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemy"))
+        {
+            collision.GetComponent<EnemyController>().TakeDamage();
+            Destroy(gameObject, 0.05f);
+        }
+    }
 }
