@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] bool gunIsLoad = true;
     [Range(0, 50)] [SerializeField] float fireRate = 1;
 
+    [SerializeField] int health = 5;
+
     private void Update()
     {
         Move();
@@ -56,5 +58,11 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(1 / fireRate);
         gunIsLoad = true;
+    }
+
+    public void TakeDamage()
+    {
+        health--;
+        if (health == 0) Debug.Log("Game Over");
     }
 }
