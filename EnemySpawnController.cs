@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemySpawnController : MonoBehaviour
 {
     [SerializeField] GameObject[] enemyPrefabs;
-    [Range(1, 10)][SerializeField] float spawnRate = 1;
+    [Range(0, 10)][SerializeField] float spawnRate = 1;
 
 
     private void Start()

@@ -17,8 +17,8 @@ public class PlayerController : MonoBehaviour
     Vector2 facingDirection;
 
     [SerializeField] Transform bulletPrefab;
-    [SerializeField] bool gunIsLoad = true;
     [Range(0, 50)] [SerializeField] float fireRate = 1;
+    [SerializeField] bool gunIsLoad = true;
 
     [SerializeField] int health = 5;
 
@@ -29,11 +29,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetMouseButton(0) && gunIsLoad)
         {
-            gunIsLoad = false;
-            float angle = Mathf.Atan2(facingDirection.y, facingDirection.x) * Mathf.Rad2Deg;
-            Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-            Instantiate(bulletPrefab, transform.position, rotation);
-            StartCoroutine(LoadGun());
+            Shoot();
         }
 
     }
@@ -60,9 +56,35 @@ public class PlayerController : MonoBehaviour
         gunIsLoad = true;
     }
 
+    void Shoot()
+    {
+        gunIsLoad = false;
+        float angle = Mathf.Atan2(facingDirection.y, facingDirection.x) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        Instantiate(bulletPrefab, transform.position, rotation);
+        StartCoroutine(LoadGun());
+    }
+
     public void TakeDamage()
     {
         health--;
         if (health == 0) Debug.Log("Game Over");
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("PowerUp"))
+        {
+            switch (collision.GetComponent<PowerUp>().powerUpType)
+            {
+                case PowerUp.PowerUpType.fireRateIncrease:
+                    fireRate++;
+                    break;
+                case PowerUp.PowerUpType.healthIncrease:
+                    health += 3;
+                    break;
+            }
+            Destroy(collision.gameObject, 0.01f);
+        }
     }
 }
