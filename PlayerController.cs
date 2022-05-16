@@ -22,6 +22,10 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] int health = 5;
 
+    [SerializeField] bool invulnerable;
+    [SerializeField] float invulnerableTime = 2;
+    [SerializeField] float blinkRate = 0.01f;
+
     private void Update()
     {
         Move();
@@ -67,6 +71,9 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage()
     {
+        if (invulnerable) return;
+        invulnerable = true;
+        StartCoroutine(MakeVulnerableAgain());
         health--;
         if (health == 0) Debug.Log("Game Over");
     }
@@ -86,5 +93,11 @@ public class PlayerController : MonoBehaviour
             }
             Destroy(collision.gameObject, 0.01f);
         }
+    }
+
+    IEnumerator MakeVulnerableAgain()
+    {
+        yield return new WaitForSeconds(invulnerableTime);
+        invulnerable = false;
     }
 }
