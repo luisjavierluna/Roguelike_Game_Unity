@@ -26,6 +26,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float invulnerableTime = 2;
     [SerializeField] float blinkRate = 0.01f;
 
+    [SerializeField] SpriteRenderer spriteRenderer;
+
     private void Update()
     {
         Move();
@@ -74,6 +76,7 @@ public class PlayerController : MonoBehaviour
         if (invulnerable) return;
         invulnerable = true;
         StartCoroutine(MakeVulnerableAgain());
+        fireRate = 15;
         health--;
         if (health == 0) Debug.Log("Game Over");
     }
@@ -97,7 +100,22 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator MakeVulnerableAgain()
     {
+        StartCoroutine(BlinkRoutine());
         yield return new WaitForSeconds(invulnerableTime);
         invulnerable = false;
+    }
+
+    IEnumerator BlinkRoutine()
+    {
+        int t = 10;
+
+        while (t > 0)
+        {
+            spriteRenderer.enabled = false;
+            yield return new WaitForSeconds(t * blinkRate);
+            spriteRenderer.enabled = true;
+            yield return new WaitForSeconds(t * blinkRate);
+            t--;
+        }
     }
 }
