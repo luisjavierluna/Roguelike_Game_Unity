@@ -19,7 +19,7 @@ public class EnemySpawnController : MonoBehaviour
         {
             yield return new WaitForSeconds(1 / spawnRate);
             float randomEnemy = Random.Range(0.0f, 1.0f);
-            if (randomEnemy > 0.1f)
+            if (randomEnemy > GameManager.instance.difficulty * 0.1f)
             {
                 Instantiate(enemyPrefabs[0]);
             }
