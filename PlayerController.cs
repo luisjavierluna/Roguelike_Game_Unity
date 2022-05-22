@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] float speed = 10;
+    public float speed = 10;
     [SerializeField] Vector3 moveDirection;
     const string HORIZONTAL = "Horizontal";
     const string VERTICAL = "Vertical";
