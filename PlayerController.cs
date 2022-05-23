@@ -21,6 +21,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] bool gunIsLoad = true;
 
     [SerializeField] int health = 5;
+    public int Health
+    {
+        get => health;
+        set
+        {
+            health = value;
+            UIManager.instance.UpdateHealthText(health);
+        }
+    }
 
     [SerializeField] bool invulnerable;
     [SerializeField] float invulnerableTime = 2;
@@ -28,6 +37,11 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Animator animator;
+
+    private void Start()
+    {
+        UIManager.instance.UpdateHealthText(health);
+    }
 
     private void Update()
     {
@@ -93,8 +107,12 @@ public class PlayerController : MonoBehaviour
         invulnerable = true;
         StartCoroutine(MakeVulnerableAgain());
         fireRate = 15;
-        health--;
-        if (health == 0) Debug.Log("Game Over");
+        Health--;
+        if (Health == 0)
+        {
+            GameManager.instance.gameOver = true; 
+            UIManager.instance.ShowGameOverScreen();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -108,6 +126,7 @@ public class PlayerController : MonoBehaviour
                     break;
                 case PowerUp.PowerUpType.healthIncrease:
                     health += 3;
+                    UIManager.instance.UpdateHealthText(health);
                     break;
             }
             Destroy(collision.gameObject, 0.01f);

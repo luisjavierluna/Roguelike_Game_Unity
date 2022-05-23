@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,12 +18,15 @@ public class GameManager : MonoBehaviour
         set
         {
             score = value;
+            UIManager.instance.UpdateScoreText(score);
             if (score % 1000 == 0)
             {
                 difficulty++;
             }
         }
     }
+
+    public bool gameOver;
 
     private void Awake()
     {
@@ -32,6 +36,9 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        UIManager.instance.UpdateScoreText(score);
+        UIManager.instance.UpdateTimeText(time);
+
         StartCoroutine(CountDownRoutine());
     }
 
@@ -41,7 +48,17 @@ public class GameManager : MonoBehaviour
         {
             yield return new WaitForSeconds(1);
             time--;
-            if (time == 0) Debug.Log("Game Over");
+            UIManager.instance.UpdateTimeText(time);
+            if (time == 0)
+            {
+                gameOver = true;
+                UIManager.instance.ShowGameOverScreen();
+            }
         }
+    }
+
+    public void PlayAgain()
+    {
+        SceneManager.LoadScene("Game");
     }
 }

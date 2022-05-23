@@ -11,6 +11,7 @@ public class CheckPoint : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             GameManager.instance.time += addedTime;
+            UIManager.instance.UpdateTimeText(GameManager.instance.time);
             Destroy(gameObject);
         }
     }
