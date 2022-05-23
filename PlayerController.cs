@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float blinkRate = 0.01f;
 
     [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] Animator animator;
 
     private void Update()
     {
@@ -38,6 +39,9 @@ public class PlayerController : MonoBehaviour
             Shoot();
         }
 
+        PlayerRenderDirection();
+
+        animator.SetFloat("Speed", moveDirection.magnitude);
     }
 
     void Move()
@@ -48,6 +52,18 @@ public class PlayerController : MonoBehaviour
         moveDirection.y = v;
 
         transform.position += moveDirection.normalized * speed * Time.deltaTime;
+    }
+
+    void PlayerRenderDirection()
+    {
+        if (aim.position.x > transform.position.x)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else
+        {
+            spriteRenderer.flipX = false;
+        }
     }
 
     void AimControll()
