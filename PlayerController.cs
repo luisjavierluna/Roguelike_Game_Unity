@@ -38,8 +38,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Animator animator;
 
+    CameraController camController;
+
     private void Start()
     {
+        camController = FindObjectOfType<CameraController>();
+
         UIManager.instance.UpdateHealthText(health);
     }
 
@@ -105,6 +109,7 @@ public class PlayerController : MonoBehaviour
     {
         if (invulnerable) return;
         invulnerable = true;
+        camController.ApplyNoise();
         StartCoroutine(MakeVulnerableAgain());
         fireRate = 15;
         Health--;
